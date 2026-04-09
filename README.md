@@ -1,5 +1,7 @@
 # Encrypted Messaging
 
+STILL WORKING ON IT
+
 A stream cipher implementation using Linear Feedback Shift Register (LFSR) keystream with both VHDL hardware and Ada software components.
 
 ## Overview
