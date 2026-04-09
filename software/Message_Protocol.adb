@@ -1,6 +1,5 @@
-with String_Conversion; use String_Conversion;
-with Ada.Text_IO;       use Ada.Text_IO;
-with GNAT.Sockets;      use GNAT.Sockets;
+with Ada.Text_IO;  use Ada.Text_IO;
+with GNAT.Sockets; use GNAT.Sockets;
 
 package body Message_Protocol is
 
