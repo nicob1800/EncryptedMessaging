@@ -1,3 +1,7 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+
 ENTITY encoder IS
     PORT (
         cipher : IN STD_LOGIC_VECTOR(15 DOWNTO 0);

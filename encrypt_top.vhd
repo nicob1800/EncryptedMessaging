@@ -1,3 +1,7 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+
 ENTITY encrypt_top IS
     PORT (
         message : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
@@ -15,13 +19,13 @@ ARCHITECTURE encrypt_top_arch OF encrypt_top IS
 BEGIN
     encrypted <= encrypted_message_wire;
 
-    u_LFSR : ENTITY work.LFSR(encrypt_top_arch)
+    u_LFSR : ENTITY work.LFSR(LFSR_ARCH)
         PORT MAP(
             clk => tclk,
             reset_n => treset_n,
             cipher_out => cipher_wire
         );
-    u_encoder : ENTITY work.encoder(encrypt_top_arch)
+    u_encoder : ENTITY work.encoder(encoder_arch)
         PORT MAP(
             cipher => cipher_wire,
             message => message,

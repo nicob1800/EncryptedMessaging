@@ -1,3 +1,7 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+
 ENTITY LFSR IS
     PORT (
         reset_n : IN STD_LOGIC;
@@ -14,7 +18,8 @@ ARCHITECTURE LFSR_ARCH OF LFSR IS
 BEGIN
 
     temp <= to_out(10) XOR (to_out(12) XOR (to_out(14) XOR to_out(15)));
-    PROCESS (clk, reset_n)
+    cipher <= to_out;
+    PROCESS (clk)
     BEGIN
         IF rising_edge(clk) THEN
             IF NOT reset_n THEN
@@ -22,7 +27,6 @@ BEGIN
             ELSE
                 to_out <= temp & to_out(15 : 1);
             END IF;
-            cipher_out <= to_out;
         END IF;
     END PROCESS;
 END
