@@ -1,6 +1,7 @@
-with Ada.Text_IO;  use Ada.Text_IO;
-with GNAT.Sockets; use GNAT.Sockets;
-with String_Conversion;
+with Ada.Text_IO;       use Ada.Text_IO;
+with GNAT.Sockets;      use GNAT.Sockets;
+with String_Conversion; use String_Conversion;
+with Interfaces;        use Interfaces;
 
 procedure client is
    Message       : String := "message";
@@ -19,18 +20,27 @@ begin
    Put_Line ("Connected.");
 
    Channel := Stream (Client_Socket);
+   declare
+      bitwise_message : String_Conversion.byte_array :=
+        String_To_Bytes (message);
+   begin
+      Put ("Sending data...");
+      byte_array'Output (Channel, bitwise_message);
+      Put_Line ("Sent.");
 
-   Put ("Sending data...");
-   String'Output (Channel, message);
-   Put_Line ("Sent.");
-
-   Put ("Receiving data...");
+      Put ("Receiving data...");
+   end;
 
    declare
-      Received_Data : String := String'Input (Channel);
+      Received_Data   : byte_array := byte_array'Input (Channel);
+      Received_String : String (1 .. Received_Data'Length);
    begin
+      for I in Received_Data'Range loop
+         Received_String (I) := Character'Val (Integer (Received_Data (I)));
+      end loop;
+
       Put_Line ("Received.");
-      Put_Line (Received_Data);
+      Put_Line (Received_String);
    end;
 
    Close_Socket (Client_Socket);
