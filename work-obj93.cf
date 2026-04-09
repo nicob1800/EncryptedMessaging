@@ -1,0 +1,10 @@
+v 4
+file . "testbench.vhd" "1cf1bf4101403e654a77345c23cd765bbeb15334" "20260409012529.597":
+  entity testbench at 1( 0) + 0 on 15;
+  architecture test of testbench at 7( 86) + 0 on 16;
+file . "encoder.vhd" "0d81af1fcbfa069d4d823213dd3633025f8365ea" "20260409012529.597":
+  entity encoder at 1( 0) + 0 on 13;
+  architecture encoder_arch of encoder at 13( 325) + 0 on 14;
+file . "LFSR.vhd" "caea874bdcde38c1d6483f3c6720c5ec44509729" "20260409012529.596":
+  entity lfsr at 1( 0) + 0 on 11;
+  architecture lfsr_arch of lfsr at 14( 280) + 0 on 12;
