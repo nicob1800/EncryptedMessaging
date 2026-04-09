@@ -36,15 +36,13 @@ package body Message_Protocol is
         Payload_Length  : Unsigned_16;
         Channel         : Stream_Access)
     is
-        Ts_Payload_Length : Unsigned_16 := Payload_Length;
-        Length_Integer    : Integer := Integer (Ts_Payload_Length);
-        Ts_Message        : byte_array (1 .. Length_Integer);
+        Length_Integer : Integer := Integer (Payload_Length);
     begin
-        Message_Payload := byte_array'Input (Channel);
-        if (Message_Payload'Length = Payload_Length) and Payload_Length /= 0
+        if (Message_Payload'Length = Length_Integer) and Length_Integer /= 0
         then
             for I in 1 .. Length_Integer loop
-                Ts_Message (I) := Message_Payload (I);
+                Message_Payload (I) := Unsigned_8'Input (Channel);
+
             end loop;
         else
             Put ("***ERROR: Payload length value does not match!***");
