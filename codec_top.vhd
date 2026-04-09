@@ -2,16 +2,16 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
-ENTITY encrypt_top IS
+ENTITY codec_top IS
     PORT (
         tmessage : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
         treset_n : IN STD_LOGIC;
         tclk : IN STD_LOGIC;
         encrypted : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
     );
-END encrypt_top;
+END codec_top;
 
-ARCHITECTURE encrypt_top_arch OF encrypt_top IS
+ARCHITECTURE codec_top_arch OF codec_top IS
 
     SIGNAL cipher_wire : STD_LOGIC_VECTOR(15 DOWNTO 0);
     SIGNAL encrypted_message_wire : STD_LOGIC_VECTOR(7 DOWNTO 0);
@@ -25,10 +25,10 @@ BEGIN
             reset_n => treset_n,
             cipher_out => cipher_wire
         );
-    u_encoder : ENTITY work.encoder(encoder_arch)
+    u_codec : ENTITY work.codec(codec_arch)
         PORT MAP(
             cipher => cipher_wire,
             message => tmessage,
-            encrypted_text => encrypted_message_wire
+            out_text => encrypted_message_wire
         );
-END encrypt_top_arch;
+END codec_top_arch;

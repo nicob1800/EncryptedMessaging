@@ -10,22 +10,17 @@ ARCHITECTURE test OF testbench IS
     SIGNAL cipher_out : STD_LOGIC_VECTOR(15 DOWNTO 0);
     SIGNAL message : STD_LOGIC_VECTOR(7 DOWNTO 0);
     SIGNAL encrypted_text : STD_LOGIC_VECTOR(7 DOWNTO 0);
+    SIGNAL deciphered_text : STD_LOGIC_VECTOR(7 DOWNTO 0);
 
 BEGIN
     -- Instantiate LFSR
-    LFSR_inst : ENTITY work.LFSR
+    codec_inst : ENTITY work.enc_dec_top
         PORT MAP(
-            clk => clk,
-            reset_n => reset_n,
-            cipher_out => cipher_out
-        );
-
-    -- Instantiate encoder
-    encoder_inst : ENTITY work.encoder
-        PORT MAP(
-            cipher => cipher_out,
-            message => message,
-            encrypted_text => encrypted_text
+            in_message => message,
+            reset => reset_n,
+            clock => clk,
+            out_encrypted => encrypted_text,
+            out_deciphered => deciphered_text
         );
 
     -- Clock generation

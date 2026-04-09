@@ -1,10 +1,16 @@
 v 4
-file . "testbench.vhd" "1cf1bf4101403e654a77345c23cd765bbeb15334" "20260409012529.597":
-  entity testbench at 1( 0) + 0 on 15;
-  architecture test of testbench at 7( 86) + 0 on 16;
-file . "encoder.vhd" "0d81af1fcbfa069d4d823213dd3633025f8365ea" "20260409012529.597":
-  entity encoder at 1( 0) + 0 on 13;
-  architecture encoder_arch of encoder at 13( 325) + 0 on 14;
-file . "LFSR.vhd" "caea874bdcde38c1d6483f3c6720c5ec44509729" "20260409012529.596":
+file . "testbench.vhd" "9eeaecde34d81c4bc8190b068784dd3306fc9642" "20260409021342.931":
+  entity testbench at 1( 0) + 0 on 19;
+  architecture test of testbench at 7( 86) + 0 on 20;
+file . "enc_dec_top.vhd" "9abb789c9ce507bddcbbed0f10c52bb54be2fbbc" "20260409021342.913":
+  entity enc_dec_top at 1( 0) + 0 on 17;
+  architecture enc_dec_top_arch of enc_dec_top at 15( 372) + 0 on 18;
+file . "codec_top.vhd" "8361631ebc5dec6554112f1b145b187c77d9e0ed" "20260409021342.895":
+  entity codec_top at 1( 0) + 0 on 15;
+  architecture codec_top_arch of codec_top at 14( 304) + 0 on 16;
+file . "codec.vhd" "4c5870b6db9d18c182fc71cf2012e361d01a1358" "20260409021342.894":
+  entity codec at 1( 0) + 0 on 13;
+  architecture codec_arch of codec at 13( 326) + 0 on 14;
+file . "LFSR.vhd" "caea874bdcde38c1d6483f3c6720c5ec44509729" "20260409021342.894":
   entity lfsr at 1( 0) + 0 on 11;
   architecture lfsr_arch of lfsr at 14( 280) + 0 on 12;
