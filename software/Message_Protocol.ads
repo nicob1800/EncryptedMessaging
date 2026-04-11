@@ -9,7 +9,6 @@ package Message_Protocol is
       Sender_ID      : Unsigned_16;
       Receiver_ID    : Unsigned_16;
       Message_Length : Unsigned_16;
-      Seed           : Unsigned_16;
       Counter        : Unsigned_16;
    end record;
 

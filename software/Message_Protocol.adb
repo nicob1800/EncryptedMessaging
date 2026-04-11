@@ -21,7 +21,6 @@ package body Message_Protocol is
         Unsigned_16'Write (Channel, Message_Header.Sender_ID);
         Unsigned_16'Write (Channel, Message_Header.Receiver_ID);
         Unsigned_16'Write (Channel, Message_Header.Message_Length);
-        Unsigned_16'Write (Channel, Message_Header.Seed);
         Unsigned_16'Write (Channel, Message_Header.Counter);
         for char of Message_Payload loop
             Unsigned_8'Write (Channel, char);
@@ -38,7 +37,6 @@ package body Message_Protocol is
         Message_Header.Sender_ID := Unsigned_16'Input (Channel);
         Message_Header.Receiver_ID := Unsigned_16'Input (Channel);
         Message_Header.Message_Length := Unsigned_16'Input (Channel);
-        Message_Header.Seed := Unsigned_16'Input (Channel);
         Message_Header.Counter := Unsigned_16'Input (Channel);
 
         Status := Ok;

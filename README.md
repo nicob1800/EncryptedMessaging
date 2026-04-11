@@ -72,7 +72,6 @@ Expected output for `"Hello"`:
 ## Features
 
 - 16-bit LFSR with configurable tap polynomial
-- Deterministic keystream (same seed produces same sequence)
 - Byte-by-byte encryption/decryption
 - Ada utilities for string encoding
 
