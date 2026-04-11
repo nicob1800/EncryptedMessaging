@@ -2,3 +2,11 @@
 *.o
 *.exe
 b__*
+
+# Build output directories
+software/obj/
+software/bin/
+
+# Compiler and build logs
+*.stdout
+*.stderr
