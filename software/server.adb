@@ -25,16 +25,7 @@ begin
    loop
       begin
          Accept_Socket (Server_Socket, Client_Socket, Client_Address);
-         loop
-            begin
-               declare
-                  length          : Integer := Message'Length;
-                  message_to_send : String := Message;
-               begin
 
-               end;
-            end;
-         end loop;
       end;
    end loop;
 end;
