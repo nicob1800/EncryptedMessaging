@@ -1,0 +1,8 @@
+project Encrypted_Messaging is
+   for Languages use ("Ada");
+   for Source_Dirs use ("software");
+   for Object_Dir use "software/obj";
+   for Exec_Dir use "software/bin";
+
+   for Main use ("client.adb", "server.adb", "test.adb");
+end Encrypted_Messaging;
