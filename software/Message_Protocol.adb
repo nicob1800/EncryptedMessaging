@@ -12,7 +12,21 @@ package body Message_Protocol is
         Header_Length : constant Integer :=
            Integer (Message_Header.Message_Length);
     begin
-        if Header_Length <= 0 or else Message_Payload'Length /= Header_Length
+        if Header_Length < 0 then
+            Status := Bad_Length;
+            return;
+        end if;
+
+        if Header_Length = 0 then
+            Status := Ok;
+            Unsigned_16'Write (Channel, Message_Header.Sender_ID);
+            Unsigned_16'Write (Channel, Message_Header.Receiver_ID);
+            Unsigned_16'Write (Channel, Message_Header.Message_Length);
+            Unsigned_16'Write (Channel, Message_Header.Counter);
+            return;
+        end if;
+
+        if Message_Payload'Length /= Header_Length
         then
             Status := Bad_Length;
             return;
@@ -53,9 +67,14 @@ package body Message_Protocol is
     is
         Length_Integer : Integer := Integer (Payload_Length);
     begin
-        if Length_Integer <= 0 or else Message_Payload'Length /= Length_Integer
+        if Length_Integer < 0 or else Message_Payload'Length /= Length_Integer
         then
             Status := Bad_Length;
+            return;
+        end if;
+
+        if Length_Integer = 0 then
+            Status := Ok;
             return;
         end if;
 
