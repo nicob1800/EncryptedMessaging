@@ -19,4 +19,11 @@ begin
     end loop;
     Close (F);
 
+    Create (F, In_File, File_Name_Out);
+    Q := Stream (F);
+    for byte of payload loop
+        byte_Array'Read (Q, byte);
+    end loop;
+    Close (F);
+
 end Bridge;
