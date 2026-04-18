@@ -2,6 +2,8 @@
 *.o
 *.exe
 b__*
+*.vscode*
+
 
 # Build output directories
 software/obj/
