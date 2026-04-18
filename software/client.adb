@@ -165,14 +165,16 @@ begin
             Encrypted_Message,
             Bridge_Result,
             Counter,
-            2.0,
+            10.0,
             "../hardware/payload_to_enc.bin",
             "../hardware/enc_to_payload.bin");
          if Bridge_Result = Ok then
             Write_Message
               (Message_Header, Encrypted_Message, Channel, Send_Status);
          else
-            Put_Line ("Encrypt failed.");
+            Put_Line
+              ("Encrypt failed: "
+               & Bridge.Bridge_Status'Image (Bridge_Result));
             exit;
          end if;
          if Send_Status /= Ok then

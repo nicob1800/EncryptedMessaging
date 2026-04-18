@@ -76,7 +76,7 @@ package body Bridge is
       Out_Payload      : out byte_array;
       Status           : out Bridge_Status;
       Counter          : in Unsigned_16 := 0;
-      Timeout_Seconds  : in Duration := 2.0;
+      Timeout_Seconds  : in Duration := 10.0;
       Input_File_Name  : in String := "payload_to_enc.bin";
       Output_File_Name : in String := "enc_to_payload.bin")
    is
@@ -155,7 +155,7 @@ package body Bridge is
       end if;
 
       declare
-         Counter_Out : constant Unsigned_16 :=
+         Counter_Out      : constant Unsigned_16 :=
            Unsigned_16
              (Hex_Value (Counter_Line (1)) * 4096
               + Hex_Value (Counter_Line (2)) * 256
