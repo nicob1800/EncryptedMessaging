@@ -3,6 +3,7 @@ with GNAT.Sockets;      use GNAT.Sockets;
 with String_Conversion; use String_Conversion;
 with Interfaces;        use Interfaces;
 with Message_Protocol;  use Message_Protocol;
+with Bridge;            use Bridge;
 
 procedure client is
    Server_IP     : constant String := "127.0.0.1";
@@ -19,7 +20,7 @@ procedure client is
    end Receiver;
 
    task body Receiver is
-      Local_Channel   : Stream_Access := null;
+      Local_Channel    : Stream_Access := null;
       Incoming_Message : Full_Message;
    begin
       accept Start (Incoming_Channel : Stream_Access) do
@@ -34,22 +35,38 @@ procedure client is
          exit when Incoming_Message.Status /= Ok;
 
          declare
-            Payload_Length : constant Unsigned_16 :=
+            Payload_Length   : constant Unsigned_16 :=
               Incoming_Message.Message_Header.Message_Length;
-            Payload_Buffer : byte_array (1 .. Positive (Payload_Length));
-            Text           : String (1 .. Positive (Payload_Length));
+            Payload_Buffer   : byte_array (1 .. Positive (Payload_Length));
+            Decrypted_Buffer : byte_array (Payload_Buffer'Range);
+            Text             : String (1 .. Positive (Payload_Length));
+            Bridge_Result    : Bridge.Bridge_Status;
          begin
             Read_Payload
               (Payload_Buffer,
                Payload_Length,
-                      Local_Channel,
+               Local_Channel,
                Incoming_Message.Status);
 
             exit when Incoming_Message.Status /= Ok;
 
-            for Index in Payload_Buffer'Range loop
+            Transfer_Payload
+              (Payload_Buffer,
+               Decrypted_Buffer,
+               Bridge_Result,
+               Incoming_Message.Message_Header.Counter,
+               2.0,
+               "../hardware/payload_to_enc.bin",
+               "../hardware/enc_to_payload.bin");
+
+            if Bridge_Result /= Ok then
+               Put_Line ("Decrypt failed.");
+               exit;
+            end if;
+
+            for Index in Decrypted_Buffer'Range loop
                Text (Index) :=
-                 Character'Val (Integer (Payload_Buffer (Index)));
+                 Character'Val (Integer (Decrypted_Buffer (Index)));
             end loop;
 
             Put_Line
@@ -114,10 +131,7 @@ begin
       Register_Header.Message_Length := 0;
       Register_Header.Counter := 0;
       Write_Message
-        (Register_Header,
-         Register_Message,
-         Channel,
-         Register_Status);
+        (Register_Header, Register_Message, Channel, Register_Status);
    end;
 
    loop
@@ -129,11 +143,13 @@ begin
       end if;
 
       declare
-         Message_To_Send : constant String := Input_Buffer (1 .. Last);
-         Bitwise_Message : byte_array := String_To_Bytes (Message_To_Send);
-         Receiver_ID     : Unsigned_16;
-         Message_Header  : Header;
-         Send_Status     : Protocol_Status;
+         Message_To_Send   : constant String := Input_Buffer (1 .. Last);
+         Bitwise_Message   : byte_array := String_To_Bytes (Message_To_Send);
+         Receiver_ID       : Unsigned_16;
+         Message_Header    : Header;
+         Send_Status       : Protocol_Status;
+         Encrypted_Message : byte_array (Bitwise_Message'Range);
+         Bridge_Result     : Bridge.Bridge_Status;
       begin
          Receiver_ID := Read_ID ("Send to client ID: ");
 
@@ -144,7 +160,21 @@ begin
          Message_Header.Counter := Counter;
 
          Put_Line ("Sending message...");
-         Write_Message (Message_Header, Bitwise_Message, Channel, Send_Status);
+         Transfer_Payload
+           (Bitwise_Message,
+            Encrypted_Message,
+            Bridge_Result,
+            Counter,
+            2.0,
+            "../hardware/payload_to_enc.bin",
+            "../hardware/enc_to_payload.bin");
+         if Bridge_Result = Ok then
+            Write_Message
+              (Message_Header, Encrypted_Message, Channel, Send_Status);
+         else
+            Put_Line ("Encrypt failed.");
+            exit;
+         end if;
          if Send_Status /= Ok then
             Put_Line ("Send failed.");
             exit;
