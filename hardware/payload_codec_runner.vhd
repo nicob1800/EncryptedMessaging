@@ -107,14 +107,6 @@ BEGIN
         reset_n <= '1';
 
         LOOP
-            -- Wait until the previous response has been consumed.
-            file_open(file_status, output_file, Output_File_Name, read_mode);
-            IF file_status = open_ok THEN
-                file_close(output_file);
-                WAIT FOR 10 ns;
-                NEXT;
-            END IF;
-
             -- Wait for the next request file.
             file_open(file_status, input_file, Input_File_Name, read_mode);
             IF file_status /= open_ok THEN
@@ -228,6 +220,11 @@ BEGIN
             END LOOP;
 
             file_close(output_file);
+
+            file_open(file_status, input_file, Input_File_Name, write_mode);
+            IF file_status = open_ok THEN
+                file_close(input_file);
+            END IF;
 
             REPORT "payload_codec_runner: wrote "
                 & INTEGER'IMAGE (count)
