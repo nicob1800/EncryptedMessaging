@@ -10,3 +10,4 @@ software/bin/
 # Compiler and build logs
 *.stdout
 *.stderr
+*.vscode*
