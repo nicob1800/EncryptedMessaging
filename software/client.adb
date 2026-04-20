@@ -19,7 +19,7 @@ procedure client is
    end Receiver;
 
    task body Receiver is
-      Local_Channel   : Stream_Access := null;
+      Local_Channel    : Stream_Access := null;
       Incoming_Message : Full_Message;
    begin
       accept Start (Incoming_Channel : Stream_Access) do
@@ -42,7 +42,7 @@ procedure client is
             Read_Payload
               (Payload_Buffer,
                Payload_Length,
-                      Local_Channel,
+               Local_Channel,
                Incoming_Message.Status);
 
             exit when Incoming_Message.Status /= Ok;
@@ -114,10 +114,7 @@ begin
       Register_Header.Message_Length := 0;
       Register_Header.Counter := 0;
       Write_Message
-        (Register_Header,
-         Register_Message,
-         Channel,
-         Register_Status);
+        (Register_Header, Register_Message, Channel, Register_Status);
    end;
 
    loop
